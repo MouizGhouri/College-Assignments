@@ -1,5 +1,3 @@
-from time import sleep
-
 class Matrix () :
     
     def __init__(self, rows, columns, matrixElements = []) :
@@ -54,21 +52,21 @@ class Matrix () :
         output = topLine + middleLines + bottomLine
         
         print (output)
-    
-def dotProduct (x, y) :
-    return sum ([i[0]*i[1] for i in zip (x, y)])
-
-def getMatrixProduct (m1, m2) :
-    
-    resultantElements = []
-    resultantMatrix = Matrix (m1.rows, m2.columns)
-    
-    for i in range (m1.rows) :
-        for j in range (m2.columns) :
-            resultantElements.append (dotProduct (m1.getRow (i), m2.getColumn (j)))
         
-    resultantMatrix.elements = resultantElements
-    return resultantMatrix
+    def __dotProduct (self, x, y) :
+        return sum ([i[0] * i[1] for i in zip (x, y)])
+        
+    def __mul__(self, other) :
+        
+        resultantElements = []
+        resultantMatrix = Matrix (self.rows, other.columns)
+
+        for i in range (self.rows) :
+            for j in range (other.columns) :
+                resultantElements.append (self.__dotProduct (self.getRow (i), other.getColumn (j)))
+
+        resultantMatrix.elements = resultantElements
+        return resultantMatrix
 
 matrices = []
 
@@ -124,8 +122,9 @@ matrices [1].draw ()
 print ()
     
 print ("\n")
-resultantMatrix = getMatrixProduct (*matrices)
-print ("> Product Matrix : ")
-resultantMatrix.draw ()
 
-sleep (20)
+resultantMatrix = matrices [0] * matrices [1]
+
+print ("> Product Matrix : ")
+
+resultantMatrix.draw ()
